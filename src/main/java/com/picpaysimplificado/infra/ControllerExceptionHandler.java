@@ -13,18 +13,18 @@ import jakarta.persistence.EntityNotFoundException;
 public class ControllerExceptionHandler {
     //ultima camada para tratar as exceçoes
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity treatDuplicateEntry(DataIntegrityViolationException exception){
+    public ResponseEntity<ExceptionDTO> treatDuplicateEntry(DataIntegrityViolationException exception){
         ExceptionDTO exceptionDTO = new ExceptionDTO("Usuário já cadastrado", "400");
         return ResponseEntity.badRequest().body(exceptionDTO);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity treat404(DataIntegrityViolationException exception){
+    public ResponseEntity<Void> treat404(DataIntegrityViolationException exception){
         return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity treatGeneralException(Exception exception){
+    public ResponseEntity<ExceptionDTO> treatGeneralException(Exception exception){
         ExceptionDTO exceptionDTO = new ExceptionDTO(exception.getMessage(), "500");
         return ResponseEntity.internalServerError().body(exceptionDTO);
     }
